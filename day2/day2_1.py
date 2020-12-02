@@ -9,6 +9,7 @@ def parse_line(line, parser):
 def check_range_rule(password, letter, lowerlimit, upperlimit):
     return lowerlimit <= password.count(letter) <= upperlimit
 
+
 if __name__ == '__main__':
 
     parser = re.compile('([0-9]+)-([0-9]+) ([a-z]): ([a-z]+)')
