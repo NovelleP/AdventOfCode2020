@@ -19,6 +19,7 @@ if __name__ == '__main__':
         'pid': '(?:[0-9]{9}(?: |$))'
     }
 
+    required_fields = set(required_field_to_validator.keys())
     validator = re.compile('|'.join(f'(?:(?:(?<=^)|(?<= )){field}(?=:{validator}))'
                                     for field, validator in required_field_to_validator.items()))
-    print(sum(is_passport_valid(passport, set(required_field_to_validator.keys()), validator) for passport in passports))
+    print(sum(is_passport_valid(passport, required_fields, validator) for passport in passports))
