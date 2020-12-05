@@ -19,6 +19,13 @@ def find_seat(instructions, row_range, col_range):
     return row_range[0], col_range[0]
 
 
+def search_free_seatid(min_seatid, max_seatid, seat_ids):
+    for seat_id in range(min_seatid, max_seatid):
+        if seat_id not in seat_ids:
+            return seat_id
+    return None
+
+
 if __name__ == '__main__':
 
     row_instructions = {'F', 'B'}
@@ -32,14 +39,14 @@ if __name__ == '__main__':
 
     row_range = (0, 127)
     col_range = (0, 7)
-    seat_ids = []
+    seat_ids = set()
+    min_seatid = float('inf')
+    max_seatid = float('-inf')
     with open('input', 'r') as f:
         for line in f.readlines():
             row, col = find_seat(line, row_range, col_range)
-            seat_ids.append(calc_seatid(row, col))
-    seat_ids.sort()
-    print(seat_ids)
-
-    for seat_id in range(seat_ids[0], seat_ids[-1]+1):
-        if seat_id not in seat_ids:
-            print(seat_id)
+            curr_seatid = calc_seatid(row, col)
+            seat_ids.add(curr_seatid)
+            min_seatid = min(min_seatid, curr_seatid)
+            max_seatid = max(max_seatid, curr_seatid)
+    print(search_free_seatid(min_seatid, max_seatid, seat_ids))
