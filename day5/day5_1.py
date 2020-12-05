@@ -1,6 +1,6 @@
 def lower_half(start, end):
     return start, ((end + start - 1) // 2)
- 
+
 
 def upper_half(start, end):
     return ((end + start + 1) // 2), end
