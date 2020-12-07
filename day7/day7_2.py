@@ -25,4 +25,4 @@ if __name__ == '__main__':
                 match = re.search('([0-9]+)(?: )([a-z][a-z ]*(?= bags?))', inner_bag_info)
                 amount, color = int(match.group(1)), match.group(2)
                 graph[container_color].append((color, amount))
-    print(count_node_childrens_with_weight('shiny gold', set(''), graph))
+    print(count_node_childrens_with_weight('shiny gold', set(), graph))
