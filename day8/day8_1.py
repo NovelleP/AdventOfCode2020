@@ -11,17 +11,22 @@ def jmp(arg, pc):
     return pc + arg
 
 
+def exec_instruction(op, arg, accumulator, pc):
+    if op == 'acc':
+        accumulator = acc(arg, accumulator)
+        pc += 1
+    elif op == 'jmp':
+        pc = jmp(arg, pc)
+    else:
+        pc += 1
+    return pc, accumulator
+
+
 def run_without_loops(instructions, accumulator, pc, executed):
     while (pc < len(instructions)) and (not executed[pc]):
         executed[pc] = True
         op, arg = instructions[pc]
-        if op == 'acc':
-            accumulator = acc(arg, accumulator)
-            pc += 1
-        elif op == 'jmp':
-            pc = jmp(arg, pc)
-        else:
-            pc += 1
+        pc, accumulator = exec_instruction(op, arg, accumulator, pc)
     return accumulator
 
 
