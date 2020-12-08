@@ -11,7 +11,7 @@ def jmp(arg, pc):
     return pc + arg
 
 
-def execute_without_loops(instructions, accumulator, pc, executed):
+def run_without_loops(instructions, accumulator, pc, executed):
     while (pc < len(instructions)) and (not executed[pc]):
         executed[pc] = True
         op, arg = instructions[pc]
@@ -29,5 +29,5 @@ if __name__ == '__main__':
     with open('input', 'r') as f:
         instructions = [parse_instruction(line) for line in f.readlines()]
 
-    print(execute_without_loops(instructions, 0, 0, [False for _ in instructions]))
+    print(run_without_loops(instructions, 0, 0, [False for _ in instructions]))
 
