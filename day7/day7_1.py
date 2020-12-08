@@ -15,6 +15,15 @@ def count_node_parents(node_name, graph):
     return parents_count
 
 
+def count_node_parents_v2(node_name, visited_nodes, graph):
+    acc = 0
+    for parent_node in graph.get(node_name, []):
+        if parent_node not in visited_nodes:
+            visited_nodes.add(parent_node)
+            acc += 1 + count_node_parents_v2(parent_node, visited_nodes, graph)
+    return acc
+
+
 if __name__ == '__main__':
     graph = {}
     with open('input', 'r') as f:
@@ -29,3 +38,4 @@ if __name__ == '__main__':
                     graph[inner_bag_color] = []
                 graph[inner_bag_color].append(container_color)
     print(count_node_parents('shiny gold', graph))
+    print(count_node_parents_v2('shiny gold', {'shiny gold'}, graph))
