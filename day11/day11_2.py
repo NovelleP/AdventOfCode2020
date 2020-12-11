@@ -10,6 +10,7 @@ def get_first_visible_values(row, col, values, grid):
         if (val := grid[curr_row][col]) in values:
             visible_values.append(val)
             break
+
     # cols
     for curr_col in range(col-1, -1, -1):
         if (val := grid[row][curr_col]) in values:
