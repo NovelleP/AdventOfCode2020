@@ -29,7 +29,6 @@ def dp_solve(sorted_joltages):
     return dp[0]
 
 
-
 if __name__ == '__main__':
     with open('input', 'r') as f:
         joltages = [int(joltage) for joltage in f.readlines()]
