@@ -6,7 +6,7 @@ def counting_sort(joltages):
         available_joltages[joltage - offset] = True
     return [(idx + offset) for idx, is_available in enumerate(available_joltages) if is_available]
 
-
+# recursive solution: slow solution for large inputs
 def solve(idx, sorted_joltages, ans):
     if idx + 1 == len(sorted_joltages):
         ans[0] += 1
