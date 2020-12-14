@@ -1,11 +1,21 @@
-def solve(idx, bus_ids, timestamps, diffs, solved):
+import math
+
+
+def lcm(nums):
+    lcm = 1
+    for num in nums:
+        lcm = lcm * num // math.gcd(lcm, num)
+    return lcm
+
+
+def solve(idx, bus_ids, timestamps, diffs):
     if idx >= len(bus_ids):
-       return True
+       return idx
     elif (timestamp := timestamps[idx - 1] + diffs[idx - 1]) % bus_ids[idx] == 0:
             timestamps[idx] = timestamp
-            return solve(idx + 1, bus_ids, timestamps, diffs, solved)
+            return solve(idx + 1, bus_ids, timestamps, diffs)
     else:
-        return False
+        return idx
 
 
 if __name__ == '__main__':
@@ -17,8 +27,12 @@ if __name__ == '__main__':
     pos = [pos for pos, _ in pos_bus_ids]
     diffs = [b - a for a, b in zip(pos[:-1], pos[1:])]
     timestamps = [0] * len(bus_ids)
-    solved = False
-    while not solved:
-        timestamps[0] += bus_ids[0]
-        solved = solve(1, bus_ids, timestamps, diffs, solved)
-    print(solved, timestamps)
+    first_idx_to_check = 1
+    step = bus_ids[0]
+    while first_idx_to_check < len(bus_ids):
+        timestamps[0] += step
+        new_first_idx_to_check = solve(1, bus_ids, timestamps, diffs)
+        if new_first_idx_to_check > first_idx_to_check:
+            first_idx_to_check = new_first_idx_to_check
+            step = lcm(bus_ids[:first_idx_to_check])
+    print(timestamps[0])
