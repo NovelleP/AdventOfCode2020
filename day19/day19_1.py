@@ -45,7 +45,7 @@ def make_regex(grammar):
 
 
 if __name__ == '__main__':
-    with open('input', 'r') as f:
+    with open('input_1', 'r') as f:
         raw_grammar, words = f.read().strip().split('\n\n')
         grammar = parse_grammar(raw_grammar)
 
