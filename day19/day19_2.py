@@ -23,18 +23,23 @@ def parse_grammar(raw_grammar):
 
 
 def make_regex(grammar):
-    r = ''.join(f'{{s{val}}}' for suc in grammar[0] for val in suc)
+    count = {}
+    r = '|'.join(''.join(f'{{s{val}}}' for val in suc) for suc in grammar[0])
     while (vals := re.findall('s\d+', r)):
         d = {val: '' for val in vals}
         for val in vals:
             tmp = '('
             for idx, s in enumerate(grammar.get(int(val[1:]), [])):
                 tmp += '('
+                rep = ''
                 for v in s:
-                    if is_int(v):
-                        tmp += f'({{s{v}}})'
+                    if is_int(v) and f's{v}' == val:
+                        rep = '+'
+                        tmp += rep if tmp[-1] != '(' else ''
+                    elif is_int(v):
+                        tmp += f'({{s{v}}})' + rep
                     else:
-                        tmp += f'({v})'
+                        tmp += f'({v})' + rep
                 tmp += ')'
                 if idx < len(grammar.get(int(val[1:]), [])) - 1:
                     tmp += '|'
@@ -43,8 +48,37 @@ def make_regex(grammar):
     return r
 
 
+def make_regex(grammar):
+    r = ''.join(f'{{s{val}}}' for suc in grammar[0] for val in suc)
+    while (vals := re.findall('s\d+', r)):
+        d = {val: '' for val in vals}
+        for val in vals:
+            tmp = '('
+            for idx, s in enumerate(grammar.get(int(val[1:]), [])):
+                tmp += '('
+                for v in s:
+                    if val == 's8':
+                        for n in range(1, 8):
+                            tmp += f'({{s42}})#{n}#|'
+                        tmp += f'({{s42}})#{8}#'
+                    elif val == 's11':
+                        for n in range(1, 8):
+                            tmp += f'(({{s42}})#{n}#({{s31}})#{n}#)|'
+                        tmp += f'(({{s42}})#{8}#({{s31}})#{8}#)'
+                    elif is_int(v):
+                        tmp += f'({{s{v}}})'
+                    else:
+                        tmp += f'({v})'
+                tmp += ')'
+                if idx < len(grammar.get(int(val[1:]), [])) - 1:
+                    tmp += '|'
+            d[val] = tmp + ')'
+        r = r.format(**d)
+    return re.sub('#([0-9]+?)#', '{\\1}', r)
+
+
 if __name__ == '__main__':
-    with open('input_1', 'r') as f:
+    with open('input_2', 'r') as f:
         raw_grammar, words = f.read().strip().split('\n\n')
         grammar = parse_grammar(raw_grammar)
 
